@@ -48,7 +48,7 @@ class OpenMeteoFetcher(WeatherFetcher):
             "latitude": lat,
             "longitude": lon,
             "hourly": "temperature_2m,precipitation",
-            "timezone": "auto"
+            "timezone": "UTC"
         }
         
         try:
