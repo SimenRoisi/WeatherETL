@@ -84,7 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Summary
         document.getElementById('cityName').textContent = loc.name;
         document.getElementById('coordinates').textContent = `${loc.lat.toFixed(2)}, ${loc.lon.toFixed(2)}`;
-        document.getElementById('mainTemp').textContent = Math.round(current.average_temperature);
+
+        // Use weighted consensus if available, fallback to average
+        const mainVal = current.weighted_temperature !== null ? current.weighted_temperature : current.average_temperature;
+        document.getElementById('mainTemp').textContent = mainVal.toFixed(1);
 
         // Sources
         const sourcesList = document.getElementById('sourcesList');
