@@ -60,10 +60,15 @@ class WeatherTransformer:
 
             for i in range(len(times)):
                 timestamp = parser.isoparse(times[i])
-                # OpenMeteo returns naive local time if timezone is not UTC, 
-                # but we requested auto timezone or can assume UTC if 'isodate' used.
-                # The 'time' field in OpenMeteo is ISO8601 but without offset if timezone is not specified.
-                # However, our extractor requests timezone='auto', let's stick to safe parsing.
+                # Ensure UTC awareness if naive
+                if timestamp.tzinfo is None:
+                     timestamp = timestamp.replace(tzinfo=datetime.timezone.utc) if hasattr(datetime, 'timezone') else timestamp
+                # Fallback for older python or just use dateutil properly? 
+                # Actually, simpliest is to assume Open-Meteo returns UTC (Z) if we didn't specify timezone,
+                # but we used timezone=auto. Let's force it to match YR's awareness.
+                from datetime import timezone
+                if timestamp.tzinfo is None:
+                    timestamp = timestamp.replace(tzinfo=timezone.utc)
                 
                 points.append(WeatherDataPoint(
                     timestamp=timestamp,

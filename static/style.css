@@ -67,8 +67,13 @@ body {
 }
 
 @keyframes move {
-    from { transform: translate(-10%, -10%); }
-    to { transform: translate(10%, 10%); }
+    from {
+        transform: translate(-10%, -10%);
+    }
+
+    to {
+        transform: translate(10%, 10%);
+    }
 }
 
 .dashboard {
@@ -93,6 +98,7 @@ body {
 
 .hero h1 span {
     background: linear-gradient(90deg, var(--primary), var(--secondary));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -174,6 +180,8 @@ body {
     border-radius: 20px;
     max-height: 300px;
     overflow-y: auto;
+    background: var(--bg-dark);
+    z-index: 20;
 }
 
 .search-results.hidden {
@@ -230,7 +238,8 @@ body {
     align-items: flex-start;
 }
 
-.card h2, .card h3 {
+.card h2,
+.card h3 {
     font-weight: 700;
     letter-spacing: -0.5px;
 }
@@ -340,7 +349,9 @@ body {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Animations */
@@ -354,6 +365,7 @@ body {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -369,6 +381,11 @@ body {
 }
 
 @media (max-width: 600px) {
-    .hero h1 { font-size: 2.5rem; }
-    .temp-display { font-size: 3.5rem; }
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .temp-display {
+        font-size: 3.5rem;
+    }
 }
