@@ -7,13 +7,17 @@ from typing import List, Optional
 from app.core.database import get_db
 from app.models.sql_models import WeatherTable, ConsensusTable
 from app.core.utils import run_etl_pipeline, resolve_location
+from app.core.limiter import limiter
+from fastapi import Request
 
 router = APIRouter()
 
 @router.get("/weather/current")
+@limiter.limit("100/hour")
 def get_current_weather(
     lat: float, 
     lon: float, 
+    request: Request,
     db: Session = Depends(get_db)
 ):
     """
@@ -81,7 +85,9 @@ def get_current_weather(
     }
 
 @router.get("/weather/daily-average")
+@limiter.limit("100/hour")
 def get_daily_average(
+    request: Request,
     location: Optional[str] = None,
     lat: Optional[float] = None,
     lon: Optional[float] = None,
@@ -124,7 +130,9 @@ def get_daily_average(
     ]
 
 @router.get("/weather/source-deviation")
+@limiter.limit("100/hour")
 def get_source_deviation(
+    request: Request,
     date: date,
     location: Optional[str] = None,
     lat: Optional[float] = None,
@@ -174,7 +182,9 @@ def get_source_deviation(
     }
 
 @router.get("/weather/search")
+@limiter.limit("100/hour")
 def search_location(
+    request: Request,
     name: str = Query(..., min_length=2, description="Name of the location to search for")
 ):
     """
