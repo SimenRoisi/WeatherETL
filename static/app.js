@@ -98,17 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `).join('');
 
-        // Deviation
+        // Deviation Logic (Daily Average)
         const devDisplay = document.getElementById('deviationDisplay');
+
         if (deviation.deviation_yr_vs_openmeteo !== null) {
             const dev = deviation.deviation_yr_vs_openmeteo.toFixed(2);
             devDisplay.innerHTML = `
                 <div class="meta-item">
-                    <label>YR vs Open-Meteo</label>
-                    <span style="font-size: 1.5rem; color: var(--primary)">${dev}°C Offset</span>
+                    <label>Daily Average Deviation</label>
+                    <span style="font-size: 1.5rem; color: var(--primary)">${dev}°C</span>
                 </div>
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 10px;">
-                    Calculated for ${deviation.date}
+                    Average offset between sources over the entire day (${deviation.date}).
                 </p>
             `;
         } else {
