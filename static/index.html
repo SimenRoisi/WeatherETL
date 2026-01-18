@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherETL | Precision Insights</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="dashboard">
+        <header class="hero">
+            <h1>Weather<span>ETL</span></h1>
+            <p>Unified insights from global meteorological sources.</p>
+        </header>
+
+        <section class="search-section">
+            <div class="search-container glass">
+                <input type="text" id="locationSearch" placeholder="Search for a city (e.g., Oslo, Tokyo)..." autocomplete="off">
+                <button id="searchBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <div id="searchResults" class="search-results hidden glass"></div>
+            </div>
+        </section>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Gathering atmospheric data...</p>
+        </div>
+
+        <section id="weatherDisplay" class="weather-grid hidden">
+            <!-- Summary Card -->
+            <div class="card summary-card glass animate-in">
+                <div class="card-header">
+                    <h2 id="cityName">Current Weather</h2>
+                    <span id="coordinates" class="badge">0.0, 0.0</span>
+                </div>
+                <div class="temp-display">
+                    <span id="mainTemp">--</span><span class="unit">°C</span>
+                </div>
+                <div class="meta-row">
+                    <div class="meta-item">
+                        <label>Status</label>
+                        <span id="weatherStatus">Synced</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sources Card -->
+            <div class="card sources-card glass animate-in" style="animation-delay: 0.1s;">
+                <h3>Data Sources</h3>
+                <div id="sourcesList" class="sources-list">
+                    <!-- Source items injected here -->
+                </div>
+            </div>
+
+            <!-- Comparison Card -->
+            <div class="card comparison-card glass animate-in" style="animation-delay: 0.2s;">
+                <h3>Source Deviation</h3>
+                <div id="deviationDisplay" class="deviation-content">
+                    <!-- Comparison data -->
+                </div>
+            </div>
+
+            <!-- Daily Averages Card -->
+            <div class="card daily-card glass animate-in" style="animation-delay: 0.3s;">
+                <h3>Historical Trends</h3>
+                <div id="dailyList" class="daily-list">
+                    <!-- Daily items injected here -->
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Built with Python, FastAPI, and SQLAlchemy. Powered by YR and Open-Meteo.</p>
+        </footer>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
