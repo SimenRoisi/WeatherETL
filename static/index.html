@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
 </head>
+
 <body>
     <div class="background-blobs">
         <div class="blob blob-1"></div>
@@ -25,9 +28,14 @@
 
         <section class="search-section">
             <div class="search-container glass">
-                <input type="text" id="locationSearch" placeholder="Search for a city (e.g., Oslo, Tokyo)..." autocomplete="off">
+                <input type="text" id="locationSearch" placeholder="Search for a city (e.g., Oslo, Tokyo)..."
+                    autocomplete="off">
                 <button id="searchBtn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
                 </button>
                 <div id="searchResults" class="search-results hidden glass"></div>
             </div>
@@ -58,7 +66,11 @@
 
             <!-- Sources Card -->
             <div class="card sources-card glass animate-in" style="animation-delay: 0.1s;">
-                <h3>Data Sources</h3>
+                <div class="card-header-group">
+                    <h3>Raw Source Inputs</h3>
+                    <p class="card-subtitle">Real-time readings from individual providers used to calculate the weighted
+                        consensus.</p>
+                </div>
                 <div id="sourcesList" class="sources-list">
                     <!-- Source items injected here -->
                 </div>
@@ -89,4 +101,5 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/static/app.js"></script>
 </body>
+
 </html>
