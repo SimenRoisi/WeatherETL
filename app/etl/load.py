@@ -1,7 +1,7 @@
 from typing import List
 from sqlalchemy.orm import Session
-from app.models.schemas import WeatherDataPoint
-from app.models.sql_models import WeatherTable, Base
+from app.models.schemas import WeatherDataPoint, ConsensusDataPoint
+from app.models.sql_models import WeatherTable, ConsensusTable, Base
 from app.core.database import engine
 
 # Create tables if they don't exist
@@ -50,4 +50,36 @@ class WeatherLoader:
         except Exception as e:
             self.db.rollback()
             print(f"Error loading data: {e}")
+            raise
+
+    def load_consensus(self, points: List[ConsensusDataPoint]):
+        """
+        Loads a list of ConsensusDataPoints into the database.
+        """
+        for point in points:
+            existing = self.db.query(ConsensusTable).filter(
+                ConsensusTable.timestamp == point.timestamp,
+                ConsensusTable.lat == point.lat,
+                ConsensusTable.lon == point.lon
+            ).first()
+
+            if existing:
+                existing.weighted_temperature = point.weighted_temperature
+                existing.source_count = point.source_count
+            else:
+                db_item = ConsensusTable(
+                    timestamp=point.timestamp,
+                    lat=point.lat,
+                    lon=point.lon,
+                    weighted_temperature=point.weighted_temperature,
+                    source_count=point.source_count
+                )
+                self.db.add(db_item)
+        
+        try:
+            self.db.commit()
+            print(f"Successfully loaded {len(points)} consensus records.")
+        except Exception as e:
+            self.db.rollback()
+            print(f"Error loading consensus data: {e}")
             raise

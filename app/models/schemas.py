@@ -27,6 +27,13 @@ class WeatherDataPoint(BaseModel):
             }
         }
 
+class ConsensusDataPoint(BaseModel):
+    timestamp: datetime
+    lat: float
+    lon: float
+    weighted_temperature: float
+    source_count: int
+
 class LocationSearchResult(BaseModel):
     name: str
     lat: float

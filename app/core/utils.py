@@ -48,6 +48,10 @@ def run_etl_pipeline(lat: float, lon: float, db: Session):
     try:
         loader = WeatherLoader(db)
         loader.load_data(all_points)
+        
+        # 4. Consensus (Weighted ETL)
+        consensus_points = WeatherTransformer.calculate_consensus(all_points)
+        loader.load_consensus(consensus_points)
     except Exception as e:
         print(f"Loading failed: {e}")
         raise e

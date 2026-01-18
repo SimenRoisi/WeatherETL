@@ -5,7 +5,7 @@ from datetime import datetime, date
 from typing import List, Optional
 
 from app.core.database import get_db
-from app.models.sql_models import WeatherTable
+from app.models.sql_models import WeatherTable, ConsensusTable
 from app.core.utils import run_etl_pipeline, resolve_location
 
 router = APIRouter()
@@ -53,9 +53,19 @@ def get_current_weather(
     temps = [r.temperature for r in records if r.temperature is not None]
     avg_temp = sum(temps) / len(temps) if temps else None
     
+    # Fetch Consensus
+    consensus_record = db.query(ConsensusTable).filter(
+        ConsensusTable.lat.between(lat - 0.0001, lat + 0.0001),
+        ConsensusTable.lon.between(lon - 0.0001, lon + 0.0001),
+        ConsensusTable.timestamp == records[0].timestamp
+    ).first()
+    
+    consensus_temp = consensus_record.weighted_temperature if consensus_record else None
+
     return {
         "location": {"lat": lat, "lon": lon},
         "average_temperature": avg_temp,
+        "weighted_temperature": consensus_temp,
         "sources": [
             {
                 "source": r.source,

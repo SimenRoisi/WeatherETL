@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
 from datetime import datetime
-from app.models.schemas import WeatherDataPoint, WeatherSource
+from app.models.schemas import WeatherDataPoint, WeatherSource, ConsensusDataPoint
 from dateutil import parser
 
 class WeatherTransformer:
@@ -77,3 +77,53 @@ class WeatherTransformer:
              print(f"Error transforming Open-Meteo data: {e}")
 
         return points
+
+    @staticmethod
+    def calculate_consensus(points: List[WeatherDataPoint]) -> List[ConsensusDataPoint]:
+        """
+        Calculates a consensus temperature based on weighted sources.
+        YR: 0.6
+        Open-Meteo: 0.4
+        """
+        grouped = {}
+        # Group by timestamp (assuming lat/lon are consistent for the batch)
+        for p in points:
+            key = p.timestamp
+            if key not in grouped:
+                grouped[key] = []
+            grouped[key].append(p)
+            
+        consensus_points = []
+        
+        for ts, group in grouped.items():
+            if not group:
+                continue
+                
+            lat = group[0].lat
+            lon = group[0].lon
+            
+            yr_temp = next((p.temperature for p in group if p.source == WeatherSource.YR_NO), None)
+            om_temp = next((p.temperature for p in group if p.source == WeatherSource.OPEN_METEO), None)
+            
+            weighted_sum = 0.0
+            total_weight = 0.0
+            
+            if yr_temp is not None:
+                weighted_sum += yr_temp * 0.6
+                total_weight += 0.6
+                
+            if om_temp is not None:
+                weighted_sum += om_temp * 0.4
+                total_weight += 0.4
+            
+            if total_weight > 0:
+                final_temp = weighted_sum / total_weight
+                consensus_points.append(ConsensusDataPoint(
+                    timestamp=ts,
+                    lat=lat,
+                    lon=lon,
+                    weighted_temperature=final_temp,
+                    source_count=len(group)
+                ))
+                
+        return consensus_points
