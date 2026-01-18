@@ -25,10 +25,14 @@ def get_current_weather(
     # Rounding down to hour for simplicity in this demo logic
     current_hour_start = now.replace(minute=0, second=0, microsecond=0)
     
+    from datetime import timedelta
+    next_hour = current_hour_start + timedelta(hours=1)
+
     records = db.query(WeatherTable).filter(
         WeatherTable.lat.between(lat - 0.0001, lat + 0.0001),
         WeatherTable.lon.between(lon - 0.0001, lon + 0.0001),
-        WeatherTable.timestamp >= current_hour_start
+        WeatherTable.timestamp >= current_hour_start,
+        WeatherTable.timestamp < next_hour
     ).all()
     
     if not records:
@@ -39,7 +43,8 @@ def get_current_weather(
             records = db.query(WeatherTable).filter(
                 WeatherTable.lat.between(lat - 0.0001, lat + 0.0001),
                 WeatherTable.lon.between(lon - 0.0001, lon + 0.0001),
-                WeatherTable.timestamp >= current_hour_start
+                WeatherTable.timestamp >= current_hour_start,
+                WeatherTable.timestamp < next_hour
             ).all()
         except Exception as e:
             # Log the specific error for debugging
@@ -105,6 +110,8 @@ def get_daily_average(
         WeatherTable.lon.between(lon - 0.0001, lon + 0.0001)
     ).group_by(
         func.strftime("%Y-%m-%d", WeatherTable.timestamp)
+    ).order_by(
+        func.strftime("%Y-%m-%d", WeatherTable.timestamp).asc()
     ).all()
     
     return [
