@@ -52,7 +52,11 @@
             <!-- Summary Card -->
             <div class="card summary-card glass animate-in">
                 <div class="card-header">
-                    <h2 id="cityName">Weighted Consensus</h2>
+                    <div>
+                        <h2 id="cityName">Weighted Consensus</h2>
+                        <p class="card-subtitle">Unified temperature derived from a weighted consensus of active models.
+                        </p>
+                    </div>
                     <span id="coordinates" class="badge">0.0, 0.0</span>
                 </div>
                 <div class="temp-display">
@@ -88,7 +92,10 @@
 
             <!-- Daily Averages Card -->
             <div class="card daily-card glass animate-in" style="animation-delay: 0.3s;">
-                <h3>Historical Trends</h3>
+                <div class="card-header-group">
+                    <h3>5-Day Forecast</h3>
+                    <p class="card-subtitle">Upcoming daily averages based on predictive models.</p>
+                </div>
                 <div id="dailyList" class="daily-list">
                     <!-- Daily items injected here -->
                 </div>

@@ -85,16 +85,22 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('cityName').textContent = loc.name;
         document.getElementById('coordinates').textContent = `${loc.lat.toFixed(2)}, ${loc.lon.toFixed(2)}`;
 
+        // Helper to determine color
+        const getColor = (t) => t > 0 ? 'var(--warm)' : 'var(--primary)';
+
         // Use weighted consensus if available, fallback to average
         const mainVal = current.weighted_temperature !== null ? current.weighted_temperature : current.average_temperature;
-        document.getElementById('mainTemp').textContent = mainVal.toFixed(1);
+        const mainEl = document.getElementById('mainTemp');
+        mainEl.textContent = mainVal.toFixed(1);
+        mainEl.nextElementSibling.style.color = getColor(mainVal); // Unit color
+        mainEl.style.color = getColor(mainVal); // Value color
 
         // Sources
         const sourcesList = document.getElementById('sourcesList');
         sourcesList.innerHTML = current.sources.map(s => `
             <div class="source-item">
                 <span class="source-name">${s.source}</span>
-                <span class="source-temp">${s.temperature.toFixed(1)}°C</span>
+                <span class="source-temp" style="color: ${getColor(s.temperature)}">${s.temperature.toFixed(1)}°C</span>
             </div>
         `).join('');
 
@@ -121,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dailyList.innerHTML = daily.slice(0, 5).map(d => `
             <div class="daily-item">
                 <span class="daily-date">${d.date}</span>
-                <span class="daily-temp">${Math.round(d.average_temperature)}°C</span>
+                <span class="daily-temp" style="color: ${getColor(d.average_temperature)}">${Math.round(d.average_temperature)}°C</span>
             </div>
         `).join('');
 
