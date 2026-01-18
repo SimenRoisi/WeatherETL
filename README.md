@@ -14,6 +14,7 @@ The goal is to systematically compare and normalize weather data from multiple s
 - Robust error handling and rate limiting
 
 ### Transform
+- UTC Timezone Normalization (critical for global model alignment)
 - Time normalization across sources
 - Spatial normalization (lat/lon vs location names)
 - Unit conversion (m/s vs km/h, mm vs cm, etc.)
@@ -28,8 +29,12 @@ The goal is to systematically compare and normalize weather data from multiple s
 
 ### Aggregation
 - Simple average as baseline
-- Weighted average based on historic deviation
+- Weighted average consensus (e.g., 60% Yr.no / 40% Open-Meteo) designed to balance local vs global model strengths
 - Confidence intervals based on source reliability
+
+### Visualization
+- Dynamic Dashboard: Real-time consensus visualization with drift monitoring and 5-day predictive forecast
+- Instant Deviation Analysis: Live comparison of source disagreements
 
 ## 🚀 Live API
 
@@ -107,24 +112,10 @@ WeatherETL/
 │   └── main.py        # FastAPI application entry point
 ├── api/
 │   └── index.py       # Vercel serverless entry point
-├── tests/             # Test files
 ├── requirements.txt   # Python dependencies
 ├── vercel.json        # Vercel deployment configuration
 └── README.md
 ```
-
-## 🚢 Deployment
-
-This project is configured for deployment on Vercel:
-
-1. Push to GitHub
-2. Import project in Vercel dashboard
-3. Vercel will automatically detect the configuration
-4. (Optional) Add Vercel Postgres database for production persistence
-
-## 📝 License
-
-This project is part of my portfolio showcasing data engineering and ETL pipeline development skills.
 
 ---
 
